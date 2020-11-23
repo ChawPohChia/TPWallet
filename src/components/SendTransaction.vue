@@ -63,11 +63,11 @@
    },
    
    methods: {   
-    Signransaction() {
+    SignTransaction() {
       console.log("Signing transaction now..");        
       },
 
-    Sendransaction() {
+    SendTransaction() {
       console.log("Sending transaction now..");        
       },
    }
