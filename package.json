@@ -8,7 +8,15 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "bs58": "^4.0.1",
+    "coinkey": "^0.1.0",
     "core-js": "^3.6.5",
+    "ecdsa": "^0.7.0",
+    "elliptic": "^6.5.3",
+    "elliptic-curve": "^0.1.0",
+    "js-sha256": "^0.9.0",
+    "ripemd160": "^2.0.2",
+    "secure-random": "^1.1.2",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0-0"
   },
