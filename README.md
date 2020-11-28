@@ -35,3 +35,6 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
       // http://cryptocoinjs.com/modules/crypto/ecdsa/
       // https://github.com/cryptocoinjs/coinkey
       // http://cryptocoinjs.com/modules/crypto/ecdsa/#ecdsa 
+
+8) https://www.twilio.com/blog/2017/08/http-requests-in-node-js.html
+9) REST API Calling: https://www.npmjs.com/package/axios 
