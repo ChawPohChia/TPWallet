@@ -79,7 +79,7 @@ export default {
     return {
       form: {
         from: null, // from opened wallet
-        to: "This is recipient address", // user fill-in
+        to: "XxnoCyJMtY323Y7mG6ePWtAmCoTH7KGqxX", // user fill-in
         value: 100000, //user fill-in
         fee: 100, // system fix
         dateCreated: null, // system derives while signing
@@ -88,7 +88,8 @@ export default {
         transactionDataHash: null, // system derives from data while signing
         SenderSignature: null, // system derives from data while signing
         coinKey: null, //wip :Need to remove this
-        ec: null //wip :Need to remove this
+        ec: null, //wip :Need to remove this
+        nodeToConnect:"http://127.0.0.1:1234/"
       }
     };
   },
@@ -150,7 +151,7 @@ export default {
         this.form.coinKey.privateKey,
         "hex",
         { canonical: true }
-      );
+      ).toDER();
       console.log("Signature:" + this.form.SenderSignature);
 
       var signedTXInfo = {
@@ -205,10 +206,7 @@ export default {
       formData.append("data", this.form.data);
       formData.append("senderPubKey", "This is sender PubKey"); // ?? WIP
       formData.append("transactionDataHash", this.form.transactionDataHash); //system created after user sign
-      formData.append(
-        "senderSignature",
-        "senderSignature(txDataHash, signature, Pubkey)"
-      ); // ?? WIP
+      formData.append("senderSignature",this.form.SenderSignature); // 
 
       // Verifying signature before REST-POST
       // WIP: so far this verification fails.

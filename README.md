@@ -38,3 +38,4 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 8) https://www.twilio.com/blog/2017/08/http-requests-in-node-js.html
 9) REST API Calling: https://www.npmjs.com/package/axios 
+10) Using datastore in Vue: https://www.smashingmagazine.com/2020/01/data-components-vue-js/#:~:text=1.-,Using%20Props%20To%20Share%20Data%20From%20Parent%20To%20Child,parent%20to%20a%20child%20component!
