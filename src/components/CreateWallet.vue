@@ -14,6 +14,7 @@
       <button type="submit" class="btn btn-primary">Generate Now</button>
       <br />
       <br />
+      <p class="lead" style="color:red;">{{form.message}}</p>          
       <div class="form-group">
           <h3 class="lead">PRIVATE KEY</h3>
           <textarea
@@ -52,30 +53,34 @@ export default {
       form: {
         privateKey: null,
         publicKey: null,        
-        address: null
+        address: null,
+        message: null
       }
     };
   },
 
   methods: {
     GenerateWallet() {
+      this.form.message="";
       console.log("Generating wallet now..");
-
+  
       //The following refers to: http://cryptocoinjs.com/modules/crypto/ecdsa/
       // and https://github.com/cryptocoinjs/coinkey
       // and http://cryptocoinjs.com/modules/crypto/ecdsa/#ecdsa      
       var sr = require("secure-random"); //npm install --save secure-random@1.x
       var CoinKey = require("coinkey"); //npm install --save coinkey@0.1.0
        
-      var privateKey = sr.randomBuffer(32);    
-      var ck = new CoinKey(privateKey, true); // true => compressed public key / addresses      
+      var privateKey = sr.randomBuffer(32);   
+      var ck = new CoinKey(privateKey)
+     
       console.log("coinkey private key: "+ck.privateKey); //true
       console.log("coinkey public key: "+ck.publicKey); //true
       console.log("coinkey public address: "+ck.publicAddress); //true
 
       this.form.privateKey=ck.privateKey.toString('hex');   
       this.form.publicKey=ck.publicKey.toString('hex');        
-      this.form.address=ck.publicAddress.toString('hex');      
+      this.form.address=ck.publicAddress.toString('hex');  
+      this.form.message="Use your private key to retrieve your wallet. Please keep your private key in a safe place. Once you lost it, you lost your wallet forever!";      
     }
   }
 };
