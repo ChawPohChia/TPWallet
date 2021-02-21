@@ -58,12 +58,7 @@
       this.form.address= key.publicAddress.toString('hex');     
 
       this.$store.commit("persistPublicKey",this.form.publicKey);   
-      this.$store.commit("persistPublicAddress",this.form.address);  
-     
-      console.log(this.$store.state.publicKey);   
-      console.log(this.$store.state.publicAddress);   
-   
-   
+      this.$store.commit("persistPublicAddress",this.form.address);    
     }
   },
 }
