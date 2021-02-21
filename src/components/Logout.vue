@@ -3,10 +3,11 @@
     <div class="row align-items-center jumbotron jumbotron-fluid page-header home full">
       <div class="col-md-12">
         <div class="container">
-          <h1 class="display-4">LOGOUT </h1>
-          <p class="lead">
-            THANK YOU FOR USING TEMASEK POLYTECHNIC BLOCKCHAIN WALLET APPLICATION 
-          </p>          
+          <h1 class="display-4" style="color:red;">Press To Logout Your Wallet</h1>
+             <form v-on:submit.prevent="Logout()">                      
+                   <button type="submit" class="btn btn-primary">Logout Wallet</button><br><br> 
+                   <p class="lead">{{message}}</p>    
+            </form>                   
         </div>
       </div>
     </div>
@@ -15,11 +16,23 @@
 
 <script>
 export default {
-  name: 'Logout'
+  name: 'Logout',
+   data() {
+    return {      
+      message:"" 
+    }
+   },
+   
+   methods: {   
+    Logout() {  
+      this.$store.commit("persistPublicKey","");   
+      this.$store.commit("persistPublicAddress","");  
+      this.message="THANK YOU FOR USING TEMASEK POLYTECHNIC BLOCKCHAIN WALLET APPLICATION "
+
+      console.log(this.$store.state.publicKey);   
+      console.log(this.$store.state.publicAddress);     
+    }
+  },
 }
 </script>
 
-
-<style>
-
-</style>
