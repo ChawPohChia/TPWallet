@@ -6,6 +6,7 @@ const store = createStore({
   state () {
     return {
       //publicKey:ref("ahbao44")
+      privateKey:"",
       publicKey:"",
       publicAddress:""
     }
@@ -19,6 +20,11 @@ const store = createStore({
     persistPublicAddress(state, pAddress){        
         state.publicAddress = pAddress;
     },
+
+    persistPrivateKey(state, pKey){        
+      state.privateKey = pKey;
+    },
+
   }
 })
 export default store;

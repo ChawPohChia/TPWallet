@@ -54,11 +54,15 @@
       var CoinKey = require('coinkey')      
  
       var key = new CoinKey(new Buffer(this.form.privateKey, 'hex'))   
-      this.form.publicKey= key.publicKey.toString('hex'); 
-      this.form.address= key.publicAddress.toString('hex');     
-
+      this.form.publicKey= key.publicKey.toString('hex');       this.form.address= key.publicAddress.toString('hex');     
+      
+      this.$store.commit("persistPrivateKey",this.form.privateKey);   
       this.$store.commit("persistPublicKey",this.form.publicKey);   
-      this.$store.commit("persistPublicAddress",this.form.address);    
+      this.$store.commit("persistPublicAddress",this.form.address); 
+      
+      console.log(this.$store.state.privateKey);
+      console.log(this.$store.state.publicKey);
+      console.log(this.$store.state.publicAddress);
     }
   },
 }
