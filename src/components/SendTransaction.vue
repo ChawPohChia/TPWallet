@@ -4,16 +4,17 @@
     <div class="row align-items-center jumbotron jumbotron-fluid page-header home full">
       <div class="col-md-12">
         <div class="container">
-          <h1 class="display-4">Send Transaction</h1>
-          <p
+          <h1 class="display-4">Send Transaction From</h1>
+          <!--p
             class="lead"
-          >Sending coin to your peer by key in yours and your peer's wallet address and value to send.</p>
+          >Sending coin to your peer by key in yours and your peer's wallet address and value to send.</p-->
+          <p class="lead" style="color:red;font-weight:bold;font-size:30px">{{form.from}}</p>         
         </div>
       </div>
     </div>
 
     <form v-on:submit.prevent="SignTransaction()">
-      <p class="lead">Sender Wallet Address:</p>
+      <!--p class="lead">Sender Wallet Address:</p>
       <textarea
         class="form-control"
         rows="1"
@@ -22,14 +23,14 @@
         v-model="form.senderAddress"
       ></textarea>
       <br />
-      <br />
+      <br /-->
       <p class="lead">Recipient Wallet Address:</p>
       <textarea
         class="form-control"
         rows="1"
         cols="100"
         id="recipientAddress"
-        v-model="form.recipientAddress"
+        v-model="form.to"
       ></textarea>
       <br />
       <br />
@@ -78,25 +79,33 @@ export default {
   data() {
     return {
       form: {
-        from: null, // from opened wallet
-        to: "XxnoCyJMtY323Y7mG6ePWtAmCoTH7KGqxX", // user fill-in
-        value: 100000, //user fill-in
-        fee: 100, // system fix
+        from: this.$store.state.publicAddress, // from opened wallet
+        to: null, // user fill-in
+        value: null, //user fill-in
+        fee: 0.001, // system fix
         dateCreated: null, // system derives while signing
         data: null, // system compiles (from stringify of gather data)
-        senderPubKey: null, // from opened wallet
+        senderPubKey: this.$store.state.publicKey, // from opened wallet
         transactionDataHash: null, // system derives from data while signing
         SenderSignature: null, // system derives from data while signing
-        coinKey: null, //wip :Need to remove this
-        ec: null, //wip :Need to remove this
+  //      coinKey: null, //wip :Need to remove this
+  //      ec: null, //wip :Need to remove this
         nodeToConnect:"http://127.0.0.1:1234/"
       }
     };
   },
 
+  mounted() {
+      if (this.$store.state.publicAddress=="")
+            this.form.from="Open an existing wallet first to continue.";
+      else
+            this.form.from=this.$store.state.publicAddress;  
+  },
+
   methods: {
     SignTransaction() {
       console.log("Constructing transaction for signing transactions..");
+      console.log(this.form);
 
       //Get current system time:
       var today = new Date();
@@ -113,11 +122,16 @@ export default {
 
       // This random generation key need to be replaced by open wallet
       //wip: to be removed
-      var sr = require("secure-random"); //npm install --save secure-random@1.x
-      var CoinKey = require("coinkey"); //npm install --save coinkey@0.1.0
-      var privKey = sr.randomBuffer(32);
-      this.form.coinKey = new CoinKey(privKey, true);
-      this.form.from = this.form.coinKey.publicAddress;
+ //     var sr = require("secure-random"); //npm install --save secure-random@1.x
+
+
+ //     var CoinKey = require("coinkey"); //npm install --save coinkey@0.1.0
+ //     var privKey = sr.randomBuffer(32);
+ //     this.form.coinKey = new CoinKey(privKey, true);
+
+
+      //this.form.from = "1EmQd4rXvNEoWLKRNSdnb2GP9i5VQwuaEM"//EM is original
+      //this.form.from = this.form.coinKey.publicAddress;
 
       //Getting transaction data and transaction data hash
       var data = {
@@ -148,7 +162,7 @@ export default {
       this.form.ec = new elliptic.ec("secp256k1");
       this.form.SenderSignature = this.form.ec.sign(
         this.form.transactionDataHash,
-        this.form.coinKey.privateKey,
+        this.$store.state.privateKey,
         "hex",
         { canonical: true }
       ).toDER();
@@ -210,12 +224,13 @@ export default {
 
       // Verifying signature before REST-POST
       // WIP: so far this verification fails.
-      var isValid = this.form.ec.verify(
-        this.form.transactionDataHash,
-        this.form.SenderSignature,
-        this.form.coinKey.publicKey
-      );
-      console.log("Signature verified correctly? :" + isValid);
+
+  //    var isValid = this.form.ec.verify(
+  //      this.form.transactionDataHash,
+  //      this.form.SenderSignature,
+  //      this.$store.state.publicKey       
+ //     );
+ //     console.log("Signature verified correctly? :" + isValid);
 
       axios
         .post("http://127.0.0.1:1234/transactions/send", formData, {})
@@ -228,9 +243,7 @@ export default {
               document.getElementById("SendedTransaction").value = "Transaction return code: "+response.data; 
               document.getElementById("SendedTransaction").value += "\nPlease check is it correct?";
           }
-        });
-
-      
+        });      
     }
   }
 };
