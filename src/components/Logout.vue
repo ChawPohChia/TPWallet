@@ -25,12 +25,14 @@ export default {
    
    methods: {   
     Logout() {  
+      this.$store.commit("persistPrivateKey",""); 
       this.$store.commit("persistPublicKey","");   
       this.$store.commit("persistPublicAddress","");  
       this.message="THANK YOU FOR USING TEMASEK POLYTECHNIC BLOCKCHAIN WALLET APPLICATION "
 
-      console.log(this.$store.state.publicKey);   
-      console.log(this.$store.state.publicAddress);     
+      console.log("PublicKey: "+this.$store.state.publicKey);   
+      console.log("PublicAddress: "+this.$store.state.publicAddress);  
+      console.log("Private Key: "+this.$store.state.privateKey);    
     }
   },
 }
