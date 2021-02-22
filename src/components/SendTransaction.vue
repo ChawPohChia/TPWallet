@@ -4,26 +4,13 @@
     <div class="row align-items-center jumbotron jumbotron-fluid page-header home full">
       <div class="col-md-12">
         <div class="container">
-          <h1 class="display-4">Send Transaction From</h1>
-          <!--p
-            class="lead"
-          >Sending coin to your peer by key in yours and your peer's wallet address and value to send.</p-->
+          <h1 class="display-4">Send Transaction From</h1>        
           <p class="lead" style="color:red;font-weight:bold;font-size:30px">{{form.from}}</p>         
         </div>
       </div>
     </div>
 
-    <form v-on:submit.prevent="SignTransaction()">
-      <!--p class="lead">Sender Wallet Address:</p>
-      <textarea
-        class="form-control"
-        rows="1"
-        cols="100"
-        id="senderAddress"
-        v-model="form.senderAddress"
-      ></textarea>
-      <br />
-      <br /-->
+    <form v-on:submit.prevent="SignTransaction()">    
       <p class="lead">Recipient Wallet Address:</p>
       <textarea
         class="form-control"
@@ -88,8 +75,6 @@ export default {
         senderPubKey: this.$store.state.publicKey, // from opened wallet
         transactionDataHash: null, // system derives from data while signing
         SenderSignature: null, // system derives from data while signing
-  //      coinKey: null, //wip :Need to remove this
-  //      ec: null, //wip :Need to remove this
         nodeToConnect:"http://127.0.0.1:1234/"
       }
     };
@@ -120,20 +105,6 @@ export default {
       var currentDateTime = date + " " + time;
       this.form.dateCreated = currentDateTime;
 
-      // This random generation key need to be replaced by open wallet
-      //wip: to be removed
- //     var sr = require("secure-random"); //npm install --save secure-random@1.x
-
-
- //     var CoinKey = require("coinkey"); //npm install --save coinkey@0.1.0
- //     var privKey = sr.randomBuffer(32);
- //     this.form.coinKey = new CoinKey(privKey, true);
-
-
-      //this.form.from = "1EmQd4rXvNEoWLKRNSdnb2GP9i5VQwuaEM"//EM is original
-      //this.form.from = this.form.coinKey.publicAddress;
-
-      //Getting transaction data and transaction data hash
       var data = {
         from: this.form.from,
         to: this.form.to,
@@ -182,32 +153,6 @@ export default {
       var signedTXInfoInJSON = JSON.stringify(signedTXInfo);
       document.getElementById("SignedTransaction").value = signedTXInfoInJSON;
 
-      /*
-      console.log("Generating wallet now..");
-
-      //The following refers to: http://cryptocoinjs.com/modules/crypto/ecdsa/
-      // and https://github.com/cryptocoinjs/coinkey
-      // and http://cryptocoinjs.com/modules/crypto/ecdsa/#ecdsa 
-      var crypto = require("crypto"); //Node.js or Browserify (browser)    
-      var sr = require("secure-random"); //npm install --save secure-random@1.x
-      var CoinKey = require("coinkey"); //npm install --save coinkey@0.1.0
-       
-      var privateKey = sr.randomBuffer(32);    
-      var ck = new CoinKey(privateKey, true); // true => compressed public key / addresses      
-      console.log("coinkey private key: "+ck.privateKey); //true
-      console.log("coinkey public key: "+ck.publicKey); //true
-      console.log("coinkey public address: "+ck.publicAddress); //true
-      
-      let elliptic = require('elliptic');
-      let ec = new elliptic.ec('secp256k1');
-
-      var msg = new Buffer("hello world!", "utf8");
-      var shaMsg = crypto.createHash("sha256").update(msg).digest();
-      let signature = ec.sign(shaMsg, privateKey, "hex", {canonical: true});
-
-      var isValid = ec.verify(shaMsg, signature, ck.publicKey);     
-      console.log("isvalid: "+isValid);
-      */
     },
 
     SendTransaction() {
@@ -221,16 +166,6 @@ export default {
       formData.append("senderPubKey", "This is sender PubKey"); // ?? WIP
       formData.append("transactionDataHash", this.form.transactionDataHash); //system created after user sign
       formData.append("senderSignature",this.form.SenderSignature); // 
-
-      // Verifying signature before REST-POST
-      // WIP: so far this verification fails.
-
-  //    var isValid = this.form.ec.verify(
-  //      this.form.transactionDataHash,
-  //      this.form.SenderSignature,
-  //      this.$store.state.publicKey       
- //     );
- //     console.log("Signature verified correctly? :" + isValid);
 
       axios
         .post("http://127.0.0.1:1234/transactions/send", formData, {})

@@ -4,7 +4,7 @@
     <router-link to="/CreateWallet">Create New Wallet</router-link> |
     <router-link to="/OpenWallet">Open Existing Wallet</router-link> |
     <router-link to="/AccountBalance">Account Balance</router-link> |
-    <router-link to="/SendTransaction">SendTransactionn</router-link> |
+    <router-link to="/SendTransaction">SendTransaction</router-link> |
     <router-link to="/Logout">Logout</router-link>
   </div>
   <router-view/>
