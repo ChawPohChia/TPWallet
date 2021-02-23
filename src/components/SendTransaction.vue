@@ -176,15 +176,9 @@ export default {
       if(isValid){
       axios
         .post("http://127.0.0.1:1234/transactions/send", formData, {})
-        .then(function(response) {
-          if(response.data==200){
+        .then(function(response) {         
               document.getElementById("SendedTransaction").value += "\nTransaction successfully sent.";
-              document.getElementById("SendedTransaction").value += "\nTransaction Hash: "+response.data;
-          }
-          else{
-              document.getElementById("SendedTransaction").value = "\nTransaction return code: "+response.data; 
-              document.getElementById("SendedTransaction").value += "\nPlease check is it correct?";
-          }
+              document.getElementById("SendedTransaction").value += "\nPlease record it down this Transaction ID for reference: "+response.data; 
          });
         }     
     }
