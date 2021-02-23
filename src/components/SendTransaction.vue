@@ -75,7 +75,8 @@ export default {
         senderPubKey: this.$store.state.publicKey, // from opened wallet
         transactionDataHash: null, // system derives from data while signing
         SenderSignature: null, // system derives from data while signing
-        nodeToConnect:"http://127.0.0.1:1234/"
+        nodeToConnect:"http://127.0.0.1:1234/",
+        ec:null
       }
     };
   },
@@ -167,18 +168,25 @@ export default {
       formData.append("transactionDataHash", this.form.transactionDataHash); //system created after user sign
       formData.append("senderSignature",this.form.SenderSignature); // 
 
+      const isValid=this.form.ec.keyFromPublic(this.$store.state.publicKey,'hex')
+       .verify(this.form.transactionDataHash,this.form.SenderSignature);
+
+      document.getElementById("SendedTransaction").value = "Signature is verified successfully: "+ isValid;
+      
+      if(isValid){
       axios
         .post("http://127.0.0.1:1234/transactions/send", formData, {})
         .then(function(response) {
           if(response.data==200){
-              document.getElementById("SendedTransaction").value = "Transaction successfully sent.";
+              document.getElementById("SendedTransaction").value += "\nTransaction successfully sent.";
               document.getElementById("SendedTransaction").value += "\nTransaction Hash: "+response.data;
           }
           else{
-              document.getElementById("SendedTransaction").value = "Transaction return code: "+response.data; 
+              document.getElementById("SendedTransaction").value = "\nTransaction return code: "+response.data; 
               document.getElementById("SendedTransaction").value += "\nPlease check is it correct?";
           }
-        });      
+         });
+        }     
     }
   }
 };
